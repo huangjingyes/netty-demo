@@ -11,6 +11,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.AttributeKey;
 
@@ -36,6 +40,13 @@ public class NettyClient {
         client.handler(new ChannelInitializer<NioSocketChannel>() {  //通道是NioSocketChannel
             @Override
             protected void initChannel(NioSocketChannel ch) throws Exception {
+                // //protobuf支持
+                // //采用Base 128 Varints进行编码，在消息头上加上32个整数，来标注数据的长度。
+                // ch.pipeline().addLast("protobufVarint32FrameDecoder", new ProtobufVarint32FrameDecoder());
+                // ch.pipeline().addLast("protobufDecoder", new ProtobufDecoder(PersonsBook.AddressBook.getDefaultInstance()));
+                // //对采用Base 128 Varints进行编码的数据解码
+                // ch.pipeline().addLast("protobufVarint32LengthFieldPrepender", new ProtobufVarint32LengthFieldPrepender());
+                // ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
                 //字符串编码器，一定要加在SimpleClientHandler 的上面
                 ch.pipeline().addLast(new StringEncoder());
                 ch.pipeline().addLast(new DelimiterBasedFrameDecoder(

@@ -41,6 +41,13 @@ public class NettyServer {
         server.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
+                // //protobuf支持
+                // //采用Base 128 Varints进行编码，在消息头上加上32个整数，来标注数据的长度。
+                // ch.pipeline().addLast("protobufVarint32FrameDecoder", new ProtobufVarint32FrameDecoder());
+                // ch.pipeline().addLast("protobufDecoder", new ProtobufDecoder(PersonsBook.AddressBook.getDefaultInstance()));
+                // //对采用Base 128 Varints进行编码的数据解码
+                // ch.pipeline().addLast("protobufVarint32LengthFieldPrepender", new ProtobufVarint32LengthFieldPrepender());
+                // ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
                 //解码器，接收的数据进行解码，一定要加在SimpleServerHandler 的上面
                 //maxFrameLength表示这一贞最大的大小
                 //delimiter表示分隔符，我们需要先将分割符写入到ByteBuf中，然后当做参数传入；
